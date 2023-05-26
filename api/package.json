@@ -1,0 +1,36 @@
+{
+  "name": "ecommerceapi",
+  "version": "1.0.0",
+  "description": "Backend for an E Commerce app",
+  "main": "index.js",
+  "scripts": {
+    "start": "cross-env NODE_MODE=PRODUCTION node index.js",
+    "dev": "cross-env NODE_MODE=DEVELOPMENT nodemon index.js"
+  },
+  "keywords": [
+    "Backend",
+    "node",
+    "ecommerce",
+    "express",
+    "next"
+  ],
+  "author": "Maxwell Ihiaso",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "http-errors": "^2.0.0",
+    "joi": "^17.6.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.0.5",
+    "morgan": "^1.10.0",
+    "redis": "^3.1.2",
+    "stripe": "^10.7.0"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "nodemon": "^2.0.19"
+  }
+}
