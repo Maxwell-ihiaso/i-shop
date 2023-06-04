@@ -3,13 +3,15 @@ import { categories } from '../Assets/data'
 import { mobile } from '../Assets/responsive'
 import CategoryItem from './CategoryItem'
 
-const Container = styled.div`
+const Container = styled.section`
   display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
   padding: 1.25rem;
   justify-content: space-between;
-  
+
   ${mobile({
-    padding: '0 1rem',
+    padding: '0',
     flexDirection: 'column',
   })}
 `

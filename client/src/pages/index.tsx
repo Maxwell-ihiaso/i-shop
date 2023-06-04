@@ -14,8 +14,8 @@ const Main = styled.div`
 const Home: NextPage = () => {
   return (
     <Layout
-      title="HOME"
-      description="An online shooping App for your fashion items"
+      title="Home"
+      description="An online shoping App for your fashion items"
     >
       <Slider />
       <Categories />
