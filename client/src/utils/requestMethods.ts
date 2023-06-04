@@ -1,7 +1,8 @@
 import axios from "axios";
+const BASE_URL = 'http://localhost:5000'
 
 export const requestWithAuth = axios.create({
-  baseURL: `http://localhost:5000/api`,
+  baseURL: `${BASE_URL}/api/`,
   timeout: 10000,
 });
 
@@ -23,6 +24,6 @@ requestWithAuth.interceptors.request.use(
 );
 
 export const requestWithoutAuth = axios.create({
-  baseURL: `http://localhost:5000/api`,
+  baseURL: `${BASE_URL}/api/`,
   timeout: 10000,
 });

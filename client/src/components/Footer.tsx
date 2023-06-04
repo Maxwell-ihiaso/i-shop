@@ -6,35 +6,38 @@ import {
   Pinterest,
   Room,
   Twitter,
-} from "@mui/icons-material";
-import Link from "next/link";
-import styled from "styled-components";
-import { mobile } from "../Assets/responsive";
+} from '@mui/icons-material'
+import Link from 'next/link'
+import styled from 'styled-components'
+import { mobile } from '../Assets/responsive'
 
 const Container = styled.div`
   display: flex;
-  ${mobile({ flexDirection: "column" })}
-`;
+
+  ${mobile({
+    flexDirection: 'column',
+  })}
+`
 
 const Left = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
   padding: 1.25rem;
-`;
+`
 
 const Logo = styled.h1`
   text-transform: uppercase;
   cursor: pointer;
-`;
+`
 
 const Desc = styled.p`
   margin: 1.25rem 0rem;
-`;
+`
 
 const SocialContainer = styled.div`
   display: flex;
-`;
+`
 
 const SocialIcon = styled.div`
   width: 2.5rem;
@@ -46,17 +49,20 @@ const SocialIcon = styled.div`
   align-items: center;
   justify-content: center;
   margin-right: 1.25rem;
-`;
+`
 
 const Center = styled.div`
   flex: 1;
   padding: 1.25rem;
-  ${mobile({ display: "none" })}
-`;
+
+  ${mobile({
+    display: 'none',
+  })}
+`
 
 const Title = styled.h3`
   margin-bottom: 1.875rem;
-`;
+`
 
 const List = styled.ul`
   margin: 0;
@@ -65,34 +71,37 @@ const List = styled.ul`
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
-`;
+`
 
 const ListItem = styled.li`
   width: 49%;
   margin-bottom: 0.625rem;
-`;
+`
 
 const Right = styled.div`
   flex: 1;
   padding: 1.25rem;
-  ${mobile({ backgroundColor: "#fff8f8" })}
-`;
+
+  ${mobile({
+    backgroundColor: '#fff8f8',
+  })}
+`
 
 const ContactItem = styled.div`
   margin-bottom: 1.25rem;
   display: flex;
   align-items: center;
-`;
+`
 
 const Payment = styled.img`
   width: 90%;
-`;
+`
 
 const Footer = () => {
   return (
     <Container>
       <Left>
-        <Link href="/">
+        <Link href='/'>
           <Logo>I_Shop</Logo>
         </Link>
         <Desc>
@@ -101,16 +110,16 @@ const Footer = () => {
           humour, or randomised words which don’t look even slightly believable.
         </Desc>
         <SocialContainer>
-          <SocialIcon color="3B5999">
+          <SocialIcon color='3B5999'>
             <Facebook />
           </SocialIcon>
-          <SocialIcon color="E4405F">
+          <SocialIcon color='E4405F'>
             <Instagram />
           </SocialIcon>
-          <SocialIcon color="55ACEE">
+          <SocialIcon color='55ACEE'>
             <Twitter />
           </SocialIcon>
-          <SocialIcon color="E60023">
+          <SocialIcon color='E60023'>
             <Pinterest />
           </SocialIcon>
         </SocialContainer>
@@ -133,20 +142,20 @@ const Footer = () => {
       <Right>
         <Title>Contact</Title>
         <ContactItem>
-          <Room style={{ marginRight: "0.625rem" }} /> 226 Eidixe Path , South
+          <Room style={{ marginRight: '0.625rem' }} /> 226 Eidixe Path , South
           Tobinchester 98336
         </ContactItem>
         <ContactItem>
-          <Phone style={{ marginRight: "0.625rem" }} /> +1 234 56 78
+          <Phone style={{ marginRight: '0.625rem' }} /> +1 234 56 78
         </ContactItem>
         <ContactItem>
-          <MailOutline style={{ marginRight: "0.625rem" }} />{" "}
+          <MailOutline style={{ marginRight: '0.625rem' }} />{' '}
           contact@maxicgray.dev
         </ContactItem>
-        <Payment src="https://i.ibb.co/Qfvn4z6/payment.png" />
+        <Payment src='https://i.ibb.co/Qfvn4z6/payment.png' />
       </Right>
     </Container>
-  );
-};
+  )
+}
 
-export default Footer;
+export default Footer

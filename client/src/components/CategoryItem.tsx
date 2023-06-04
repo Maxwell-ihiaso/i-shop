@@ -46,7 +46,7 @@ const Button = styled.button`
 const CategoryItem = (item: ICategory) => {
   const router = useRouter();
   return (
-    <Container onClick={() => router.push(`/products/category/${item.cat}`)}>
+    <Container onClick={() => router.push(`products/category/${item.cat}`)}>
       <Image src={item.img} alt={item.title} />
       <Info>
         <Title>{item.title}</Title>
