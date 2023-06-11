@@ -2,7 +2,7 @@ import { ArrowLeftOutlined, ArrowRightOutlined } from "@mui/icons-material";
 import { useState } from "react";
 import styled from "styled-components";
 import { sliderItems } from "../Assets/data";
-import { mobile } from "../Assets/responsive";
+import { mobile, tablet } from "../Assets/responsive";
 
 interface IWrapper {
   slideIndex: number;
@@ -18,7 +18,7 @@ interface ISlide {
 
 const Container = styled.div`
   width: 100%;
-  height: 100vh;
+  height: 80vh;
   display: flex;
   position: relative;
   overflow: hidden;
@@ -36,8 +36,8 @@ const Arrow = styled.div<IArrow>`
   position: absolute;
   top: 0;
   bottom: 0;
-  left: ${(props) => props.direction === "left" && "0.625rem"};
-  right: ${(props) => props.direction === "right" && "0.625rem"};
+  left: ${({direction}) => direction === "left" && "0.625rem"};
+  right: ${({direction}) => direction === "right" && "0.625rem"};
   margin: auto;
   cursor: pointer;
   opacity: 0.5;
@@ -71,6 +71,7 @@ const Image = styled.img`
 const InfoContainer = styled.div`
   flex: 1;
   padding: 3.125rem;
+  ${tablet({display: "none"})}
 `;
 
 const Title = styled.h1`
