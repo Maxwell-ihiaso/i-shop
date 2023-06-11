@@ -4,6 +4,7 @@ const BASE_URL = 'http://localhost:5000'
 export const requestWithAuth = axios.create({
   baseURL: `${BASE_URL}/api/`,
   timeout: 10000,
+  withCredentials: true
 });
 
 requestWithAuth.interceptors.request.use(

@@ -2,10 +2,34 @@ import {
   FavoriteBorderOutlined,
   SearchOutlined,
   ShoppingCartOutlined,
-} from "@mui/icons-material";
-import Link from "next/link";
-import styled from "styled-components";
-import { IPopularProduct } from "../interfaces";
+} from '@mui/icons-material'
+import Link from 'next/link'
+import styled from 'styled-components'
+import { IProduct } from '../pages/products/[productID]'
+
+const Container = styled.section`
+  flex: 1;
+  margin: 0.3125rem;
+  min-width: 10rem;
+  width: 19rem;
+  height: 15rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #fdfdfd;
+  position: relative;
+  flex-direction: column;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  padding: 1rem 0;
+`
+
+const Image = styled.img`
+  height: 55%;
+  z-index: 2;
+  mix-blend-mode: multiply;
+  flex: 3;
+`
 
 const Info = styled.div`
   opacity: 0;
@@ -21,36 +45,11 @@ const Info = styled.div`
   justify-content: center;
   transition: all 0.5s ease;
   cursor: pointer;
-`;
 
-const Container = styled.div`
-  flex: 1;
-  margin: 0.3125rem;
-  min-width: 17.5rem;
-  height: 21.875rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #f5fbfd;
-  position: relative;
-
-  &:hover ${Info} {
+  &:hover {
     opacity: 1;
   }
-`;
-
-const Circle = styled.div`
-  width: 12.5rem;
-  height: 12.5rem;
-  border-radius: 50%;
-  background-color: white;
-  position: absolute;
-`;
-
-const Image = styled.img`
-  height: 75%;
-  z-index: 2;
-`;
+`
 
 const Icon = styled.div`
   width: 2.5rem;
@@ -66,21 +65,40 @@ const Icon = styled.div`
     background-color: #e9f5f5;
     transform: scale(1.1);
   }
-`;
+`
 
-const Product = (item: IPopularProduct) => {
+const ProducDetails = styled.div`
+  flex: 1;
+`
+
+const ProductDetailsTitle = styled.p`
+  text-transform: capitalize;
+  font-size: 0.8rem;
+  margin-bottom: 0;
+`
+
+const ProductDetailsPrice = styled.span`
+  font-weight: 500;
+`
+const Product = (item: IProduct) => {
+  const desc =
+    item?.title.length > 25 ? `${item.title.substring(0, 25)}...` : item.title
   return (
     <Container>
-      <Circle />
-      <Image src={item.main_image} alt="" />
+      <Image src={item.main_image} alt='' />
+
+      <ProducDetails>
+        <ProductDetailsTitle>{desc}</ProductDetailsTitle>
+        <ProductDetailsPrice>${item.price}</ProductDetailsPrice>
+      </ProducDetails>
       <Info>
         <Icon>
           <ShoppingCartOutlined />
         </Icon>
         <Icon>
           <Link
-            as={`/products/${encodeURIComponent(item._id)}`}
-            href="/products/[productID]"
+            as={`products/${encodeURIComponent(item._id)}`}
+            href='products/[productID]'
           >
             <SearchOutlined />
           </Link>
@@ -90,7 +108,7 @@ const Product = (item: IPopularProduct) => {
         </Icon>
       </Info>
     </Container>
-  );
-};
+  )
+}
 
-export default Product;
+export default Product

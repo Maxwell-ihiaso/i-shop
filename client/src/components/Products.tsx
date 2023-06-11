@@ -36,8 +36,8 @@ const Products = ({ cat, filters, sort }: IProductComponent) => {
       try {
         const res = await requestWithoutAuth.get<IProduct[]>(
           cat
-            ? `http://localhost:5000/api/products?category=${cat}`
-            : "http://localhost:5000/api/products"
+            ? `products?category=${cat}`
+            : "products"
         );
         setProducts(res.data);
       } catch (err) {
