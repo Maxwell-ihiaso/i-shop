@@ -79,3 +79,50 @@ export const categories: ICategory[] = [
 //     img: "https://www.pngarts.com/files/3/Women-Jacket-PNG-High-Quality-Image.png",
 //   },
 // ];
+
+export const footerData = {
+  links: [
+    {
+      usefulLinks: [
+        {
+          title: 'home',
+          links: '#',
+        },
+        {
+          title: 'cart',
+          links: '#',
+        },
+        {
+          title: 'man fashion',
+          links: '#',
+        },
+        {
+          title: 'women fashion',
+          links: '#',
+        },
+        {
+          title: 'accesories',
+          links: '#',
+        },
+        {
+          title: 'my account',
+          links: '#',
+        },
+        {
+          title: 'order tracking',
+          links: '#',
+        },
+        {
+          title: 'wishlist',
+          links: '#',
+        },
+        {
+          title: 'terms',
+          links: '#',
+        },
+      ],
+    },
+  ],
+}
+
+export type IFooterData = typeof footerData

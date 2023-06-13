@@ -10,6 +10,7 @@ import {
 import Link from 'next/link'
 import styled from 'styled-components'
 import { mobile } from '../Assets/responsive'
+import { footerData } from '../Assets/data'
 
 const Container = styled.div`
   display: flex;
@@ -124,21 +125,24 @@ const Footer = () => {
           </SocialIcon>
         </SocialContainer>
       </Left>
-      <Center>
-        <Title>Useful Links</Title>
-        <List>
-          <ListItem>Home</ListItem>
-          <ListItem>Cart</ListItem>
-          <ListItem>Man Fashion</ListItem>
-          <ListItem>Woman Fashion</ListItem>
-          <ListItem>Accessories</ListItem>
-          <ListItem>My Account</ListItem>
-          <ListItem>Order Tracking</ListItem>
-          <ListItem>Wishlist</ListItem>
-          <ListItem>Wishlist</ListItem>
-          <ListItem>Terms</ListItem>
-        </List>
-      </Center>
+      {footerData?.links?.some((elem) => !!elem['usefulLinks']?.length) && (
+        <Center>
+          <Title>Useful Links</Title>
+          <List>
+            {/* {footerData?.links?.find((elem) => "usefulLinks" in elem)} */}
+            <ListItem>Home</ListItem>
+            <ListItem>Cart</ListItem>
+            <ListItem>Man Fashion</ListItem>
+            <ListItem>Woman Fashion</ListItem>
+            <ListItem>Accessories</ListItem>
+            <ListItem>My Account</ListItem>
+            <ListItem>Order Tracking</ListItem>
+            <ListItem>Wishlist</ListItem>
+            <ListItem>Wishlist</ListItem>
+            <ListItem>Terms</ListItem>
+          </List>
+        </Center>
+      )}
       <Right>
         <Title>Contact</Title>
         <ContactItem>
