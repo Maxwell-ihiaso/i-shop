@@ -1,4 +1,10 @@
 .DS_Store
 **/.env
+**/*/dist
+**/src/dist
+src/dist
+dist
+
 **/.DS_Store
 **/node_modules
+**/yarn-error.log
