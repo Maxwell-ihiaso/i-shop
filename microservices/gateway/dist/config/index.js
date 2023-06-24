@@ -1,0 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ENVIRONMENT = exports.ORDER_MICROSERVICE = exports.CHECKOUT_MICROSERVICE = exports.CART_MICROSERVICE = exports.PRODUCT_MICROSERVICE = exports.USER_MICROSERVICE = exports.AUTH_MICROSERVICE = void 0;
+require("dotenv/config");
+exports.AUTH_MICROSERVICE = process.env.AUTH_MICROSERVICE;
+exports.USER_MICROSERVICE = process.env.USER_MICROSERVICE;
+exports.PRODUCT_MICROSERVICE = process.env.PRODUCT_MICROSERVICE;
+exports.CART_MICROSERVICE = process.env.CART_MICROSERVICE;
+exports.CHECKOUT_MICROSERVICE = process.env.CHECKOUT_MICROSERVICE;
+exports.ORDER_MICROSERVICE = process.env.ORDER_MICROSERVICE;
+exports.ENVIRONMENT = process.env.NODE_ENV;
