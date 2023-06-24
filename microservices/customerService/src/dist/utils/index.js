@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.verifyRefreshToken = exports.signRefreshToken = exports.verifyAccessTokenAndAdmin = exports.verifyAccessTokenAndAuthorization = exports.verifyAccessToken = exports.signAccessToken = exports.GeneratePassword = exports.GenerateSalt = void 0;
+exports.verifyRefreshToken = exports.signRefreshToken = exports.verifyAccessTokenAndAdmin = exports.verifyAccessTokenAndAuthorization = exports.verifyAccessToken = exports.signAccessToken = exports.ValidatePassword = exports.GeneratePassword = exports.GenerateSalt = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 // import amqplib from 'amqplib';
@@ -28,13 +28,10 @@ const GeneratePassword = (password, salt) => __awaiter(void 0, void 0, void 0, f
     return yield bcrypt_1.default.hash(password, salt);
 });
 exports.GeneratePassword = GeneratePassword;
-// module.exports.ValidatePassword = async (
-//   enteredPassword,
-//   savedPassword,
-//   salt
-// ) => {
-//   return (await this.GeneratePassword(enteredPassword, salt)) === savedPassword
-// }
+const ValidatePassword = (enteredPassword, savedPassword) => __awaiter(void 0, void 0, void 0, function* () {
+    return yield bcrypt_1.default.compare(enteredPassword, savedPassword);
+});
+exports.ValidatePassword = ValidatePassword;
 // module.exports.GenerateSignature = async (payload) => {
 //   try {
 //     return await jwt.sign(payload, APP_SECRET, { expiresIn: '30d' })

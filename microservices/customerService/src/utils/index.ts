@@ -5,10 +5,10 @@ import jwt from 'jsonwebtoken';
 import createError from 'http-errors';
 
 import {
-    // APP_SECRET,
-    // EXCHANGE_NAME,
+  // APP_SECRET,
+  // EXCHANGE_NAME,
   //   CUSTOMER_SERVICE,
-    // MSG_QUEUE_URL,
+  // MSG_QUEUE_URL,
   ACCESS_TOKEN_SECRET,
   REFRESH_TOKEN_SECRET,
 } from '../config';
@@ -23,13 +23,12 @@ export const GeneratePassword = async (password: string, salt: any) => {
   return await bcrypt.hash(password, salt);
 };
 
-// module.exports.ValidatePassword = async (
-//   enteredPassword,
-//   savedPassword,
-//   salt
-// ) => {
-//   return (await this.GeneratePassword(enteredPassword, salt)) === savedPassword
-// }
+export const ValidatePassword = async (
+  enteredPassword: string,
+  savedPassword: string,
+) => {
+  return await bcrypt.compare(enteredPassword, savedPassword);
+};
 
 // module.exports.GenerateSignature = async (payload) => {
 //   try {
