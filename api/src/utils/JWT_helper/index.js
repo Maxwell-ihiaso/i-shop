@@ -35,7 +35,7 @@ const verifyAccessToken = (req, res, next) => {
   const token = bearerToken[1];
   JWT.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, payload) => {
     if (err) {
-      console.error("unable to complete handshake in middleware", err.message);
+      console.error("unable to verify token", err.message);
       return err.name === "JsonWebTokenError"
         ? next(createError.Unauthorized())
         : next(createError.Unauthorized(`You are logged out`));

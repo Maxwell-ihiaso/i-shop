@@ -1,4 +1,4 @@
-const authRoute = require("./auth");
+const authRoute = require("./auth.route");
 const cartRoute = require("./cart");
 const orderRoute = require("./order");
 const productRoute = require("./product");

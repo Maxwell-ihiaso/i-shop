@@ -7,7 +7,7 @@ const UserSchema = new mongoose.Schema(
     last_name: { type: String, required: true, unique: true },
     username: { type: String, lowercase: true, required: true, unique: true },
     email: { type: String, lowercase: true, required: true, unique: true },
-    password: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
     confirm_password: { type: String, required: true },
     isAdmin: {
       type: Boolean,
@@ -19,6 +19,7 @@ const UserSchema = new mongoose.Schema(
 );
 
 UserSchema.pre("save", async function (next) {
+  if (!this.isModified(this.password)) next()
   try {
     const generatedSalt = await brcypt.genSalt(
       Number(process.env.BCRYPT_SALT_ROUNDS)

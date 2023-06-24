@@ -3,6 +3,9 @@ const morgan = require("morgan");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const createError = require("http-errors");
+const cookieParser = require("cookie-parser");
+dotenv.config();
+
 const {
   authRoute,
   cartRoute,
@@ -12,17 +15,16 @@ const {
   userRoute,
 } = require("./src/routes");
 
-dotenv.config();
+const PORT = process.env.PORT || 5000
+
 
 // Establish connection with database
-
 require("./src/utils/init_db");
 
 // Establish connection with redis cache
 require("./src/utils/init_redis/index");
 
 // intialize express APP
-
 const app = express();
 
 if (process.env.NODE_MODE.toLowerCase() === "development") {
@@ -32,6 +34,7 @@ if (process.env.NODE_MODE.toLowerCase() === "development") {
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser())
 
 // Valid API Routes andd handler
 
@@ -59,8 +62,8 @@ app.use((error, req, res, next) => {
   });
 });
 
-app.listen(process.env.PORT || 5000, (err) => {
+app.listen(PORT , (err) => {
   if (err) return console.log(err);
 
-  console.log("I_Shop server is running!\nCONNECTING TO DB...");
+  console.log(`I_Shop server is runningon port ${PORT}!\nCONNECTING TO DB...`);
 });
