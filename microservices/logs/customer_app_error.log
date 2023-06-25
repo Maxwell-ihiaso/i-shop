@@ -1,0 +1,1 @@
+{"level":"error","message":"Sun Jun 25 2023 02:29:23 GMT+0100 (West Africa Standard Time) : undefined : Error : querySrv ETIMEOUT _mongodb._tcp.cluster0.vwlx2.mongodb.net : Error: querySrv ETIMEOUT _mongodb._tcp.cluster0.vwlx2.mongodb.net\n    at QueryReqWrap.onresolve [as oncomplete] (node:internal/dns/promises:240:17)","private":true}

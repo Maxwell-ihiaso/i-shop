@@ -1,6 +1,6 @@
 import mongoose, { Document, Model, Schema } from 'mongoose';
 
-interface IAddress extends Document {
+export interface IAddress extends Document {
   street: string;
   postalCode: string;
   city: string;

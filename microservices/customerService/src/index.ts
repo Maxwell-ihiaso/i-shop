@@ -1,14 +1,14 @@
 import express, { Express } from 'express'
 
 import { ENVIRONMENT, PORT } from './config'
-// import { databaseConnection } from './database'
 import expressApp from './express-app'
+import { dbConn } from './database'
 // import { CreateChannel } from './utils'
 
 const StartServer = async () => {
   const app: Express = express()
 
-//   await databaseConnection()
+  await dbConn()
 
 //   const channel = await CreateChannel()
 

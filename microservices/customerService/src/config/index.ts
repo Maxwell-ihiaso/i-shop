@@ -8,6 +8,7 @@ export const MONGO_URI = process.env.MONGO_URI!;
 export const REDIS_HOSTNAME = process.env.REDIS_HOSTNAME!;
 export const REDIS_PORT = process.env.REDIS_PORT!;
 export const REDIS_PASSWORD = process.env.REDIS_PASSWORD!;
+export const REDIS_USERNAME = process.env.REDIS_USERNAME!;
 export const BCRYPT_SALT_ROUNDS = process.env.BCRYPT_SALT_ROUNDS!;
 export const DOMAIN_NAME = process.env.DOMAIN_NAME!;
 export const STRIPE_KEY = process.env.STRIPE_KEY!;

@@ -1,17 +1,22 @@
 import { createClient } from 'redis';
-import { REDIS_HOSTNAME, REDIS_PORT } from '../config';
+import { REDIS_HOSTNAME, REDIS_PASSWORD, REDIS_PORT } from '../config';
 // import createError from 'http-errors';
 
 const host = REDIS_HOSTNAME;
 const port = Number(REDIS_PORT);
-// const password = REDIS_PASSWORD;
+const password = REDIS_PASSWORD;
 
 const client = createClient({
+  password: password,
   socket: {
     host,
     port,
   },
 });
+
+const startConnection = async () => {
+  await client.connect();
+};
 
 client.on('connect', () => console.log('Connecting to redis cache...'));
 
@@ -23,36 +28,40 @@ client.on('end', () => console.log('redis instance closed successfully!'));
 
 process.on('SIGINT', () => client.quit());
 
+/**=======================
+ * STORE CLASS
+ * =======================
+ */
 class Store {
-  constructor() {}
+  constructor() {
+    if (!client.isOpen) startConnection();
+  }
 
   async setStore(
     userId: any,
     refToken: any,
-    callback: (err: Error | null, result: any) => void,
+    callback?: (err: Error | null, result: any) => void,
   ) {
     const key = `${userId}`;
     const value = refToken;
 
-    await client.connect();
-
     await client
       .set(key, value)
-      .then((result) => callback(null, result))
-      .catch((err) => callback(err, null));
-
-    await client.disconnect();
+      .then((result) => callback && callback(null, result))
+      .catch((err) => callback && callback(err, null));
   }
 
-  async getStore(key: any, callback: (err: Error | null, result: any) => void) {
-    await client.connect();
-
+  async getStore(
+    key: any,
+    callback?: (err: Error | null, result: any) => void,
+  ) {
     await client
       .get(key)
-      .then((result) => callback(null, result))
-      .catch((err) => callback(err, null));
-
-    await client.disconnect();
+      .then((result) => {
+        callback && callback(null, result);
+        return result;
+      })
+      .catch((err) => callback && callback(err, null));
   }
 }
 

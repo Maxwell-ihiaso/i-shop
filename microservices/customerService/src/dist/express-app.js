@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const console_1 = require("console");
+const { ErrorHandler } = require("./utils/error-handler");
 // import { customer, appEvents } from './api'
 // import { SubscribeMessage } from './utils'
 exports.default = (app, channel) => __awaiter(void 0, void 0, void 0, function* () {
@@ -27,4 +28,5 @@ exports.default = (app, channel) => __awaiter(void 0, void 0, void 0, function* 
     (0, console_1.log)(channel);
     //   customer(app, channel)
     // error handling
+    
 });

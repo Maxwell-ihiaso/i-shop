@@ -1,19 +1,19 @@
 import mongoose, { Document, Model, Schema } from 'mongoose';
 import { GeneratePassword, GenerateSalt, ValidatePassword } from '../../utils';
 
-interface IProduct extends Document {
+export interface IProduct extends Document {
   _id: string;
   name: string;
   banner: string;
   price: number;
 }
 
-interface ICartProduct extends Document {
+export interface ICartProduct extends Document {
   product: IProduct;
   unit: number;
 }
 
-interface IWishList extends Document {
+export interface IWishList extends Document {
   _id: string;
   name: string;
   description: string;
@@ -22,13 +22,13 @@ interface IWishList extends Document {
   price: number;
 }
 
-interface IOrder extends Document {
+export interface IOrder extends Document {
   _id: string;
   amount: string;
   date: Date;
 }
 
-interface ICustomer extends Document {
+export interface ICustomer extends Document {
   email: string;
   password: string;
   salt: string;
@@ -83,7 +83,10 @@ const CustomerSchema: Schema<ICustomer> = new Schema(
         default: 2001,
       },
     ],
-    image: { type: String },
+    image: {
+      type: String,
+      default: 'https://img.freepik.com/free-icon/user_318-563642.jpg',
+    },
   },
   {
     toJSON: {
