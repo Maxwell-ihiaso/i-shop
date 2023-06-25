@@ -50,19 +50,6 @@ class CustomerService {
     return { id: existingCustomer._id, roles: existingCustomer.roles };
   }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
   async AddNewAddress(
     _id: string,
     userInputs: {
