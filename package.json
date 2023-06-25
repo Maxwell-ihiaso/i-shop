@@ -7,7 +7,8 @@
   "author": "Maxwell (torchLight) Ihiaso",
   "license": "ISC",
   "scripts": {
-    "lint": "prettier --write \"**/*.ts\""
+    "lint": "prettier --write \"**/*.ts\"",
+    "prepare": "husky install"
   },
   "husky": {
     "hooks": {
@@ -15,13 +16,13 @@
     }
   },
   "lint-staged": {
-    "src/**/*.js": [
+    "**/*.ts": [
       "yarn run lint",
       "git add"
     ]
   },
   "devDependencies": {
-    "husky": "^8.0.3",
+    "husky": "^8.0.0",
     "lint-staged": "^13.2.2",
     "prettier": "^2.8.8"
   }
