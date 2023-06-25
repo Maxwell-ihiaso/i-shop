@@ -14,40 +14,50 @@ const config_1 = require("../config");
 // import createError from 'http-errors';
 const host = config_1.REDIS_HOSTNAME;
 const port = Number(config_1.REDIS_PORT);
-// const password = REDIS_PASSWORD;
+const password = config_1.REDIS_PASSWORD;
 const client = (0, redis_1.createClient)({
+    password: password,
     socket: {
         host,
         port,
     },
+});
+const startConnection = () => __awaiter(void 0, void 0, void 0, function* () {
+    yield client.connect();
 });
 client.on('connect', () => console.log('Connecting to redis cache...'));
 client.on('ready', () => console.log('connected to redis cache!'));
 client.on('error', (err) => console.log('Redis error', err));
 client.on('end', () => console.log('redis instance closed successfully!'));
 process.on('SIGINT', () => client.quit());
+/**=======================
+ * STORE CLASS
+ * =======================
+ */
 class Store {
-    constructor() { }
+    constructor() {
+        if (!client.isOpen)
+            startConnection();
+    }
     setStore(userId, refToken, callback) {
         return __awaiter(this, void 0, void 0, function* () {
             const key = `${userId}`;
             const value = refToken;
-            yield client.connect();
             yield client
                 .set(key, value)
-                .then((result) => callback(null, result))
-                .catch((err) => callback(err, null));
-            yield client.disconnect();
+                .then((result) => callback && callback(null, result))
+                .catch((err) => callback && callback(err, null));
         });
     }
     getStore(key, callback) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield client.connect();
             yield client
                 .get(key)
-                .then((result) => callback(null, result))
-                .catch((err) => callback(err, null));
-            yield client.disconnect();
+                .then((result) => {
+                callback && callback(null, result);
+                return result;
+            })
+                .catch((err) => callback && callback(err, null));
         });
     }
 }

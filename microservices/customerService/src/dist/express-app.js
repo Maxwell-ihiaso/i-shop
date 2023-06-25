@@ -15,9 +15,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const console_1 = require("console");
-const { ErrorHandler } = require("./utils/error-handler");
+const error_handler_1 = require("./utils/error-handler");
+const database_1 = require("./database");
 // import { customer, appEvents } from './api'
 // import { SubscribeMessage } from './utils'
+const store = new database_1.Store();
 exports.default = (app, channel) => __awaiter(void 0, void 0, void 0, function* () {
     app.use((0, cors_1.default)());
     app.use(express_1.default.json());
@@ -28,5 +30,5 @@ exports.default = (app, channel) => __awaiter(void 0, void 0, void 0, function* 
     (0, console_1.log)(channel);
     //   customer(app, channel)
     // error handling
-    
+    app.use(error_handler_1.ErrorHandler);
 });

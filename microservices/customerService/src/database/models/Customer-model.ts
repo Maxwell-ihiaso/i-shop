@@ -39,6 +39,7 @@ export interface ICustomer extends Document {
   orders: IOrder[];
   roles: number[];
   image: string;
+  isValidPassword: (password: string) => Promise<boolean>;
 }
 
 const WishListSchema: Schema<IWishList> = new Schema({

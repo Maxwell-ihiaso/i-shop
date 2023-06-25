@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ErrorHandler = void 0;
+exports.ErrorHandler = exports.ErrorLogger = void 0;
 const winston_1 = require("winston");
 const LogErrors = (0, winston_1.createLogger)({
     transports: [
@@ -25,12 +25,13 @@ class ErrorLogger {
             LogErrors.log({
                 private: true,
                 level: 'error',
-                message: `${new Date()} : ${err === null || err === void 0 ? void 0 : err.statusCode} : ${err === null || err === void 0 ? void 0 : err.name} : ${(err === null || err === void 0 ? void 0 : err.errorStack) ? err === null || err === void 0 ? void 0 : err.errorStack : err === null || err === void 0 ? void 0 : err.message}`,
+                message: `${new Date()} : ${err === null || err === void 0 ? void 0 : err.status} : ${err === null || err === void 0 ? void 0 : err.name} : ${err === null || err === void 0 ? void 0 : err.message} : ${(err === null || err === void 0 ? void 0 : err.stack) && (err === null || err === void 0 ? void 0 : err.stack)}`,
             });
             console.log('==================== End Error Logger ===============');
         });
     }
 }
+exports.ErrorLogger = ErrorLogger;
 const ErrorHandler = (err, req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     const errorLogger = new ErrorLogger();

@@ -59,11 +59,11 @@ exports.ValidatePassword = ValidatePassword;
 //     throw new Error('Data Not found!')
 //   }
 // }
-const signAccessToken = (userId, isAdmin) => {
+const signAccessToken = (userId, roles) => {
     return new Promise((resolve, reject) => {
         const payload = {
             id: userId,
-            isAdmin,
+            roles,
         };
         const options = {
             expiresIn: '30m',
@@ -120,22 +120,20 @@ const verifyAccessTokenAndAdmin = (req, res, next) => {
 exports.verifyAccessTokenAndAdmin = verifyAccessTokenAndAdmin;
 // Refresh token is used to handle a forgot password
 // Redis is used to cache refresh token and black list on new ref token signing
-const signRefreshToken = (userId, isAdmin) => {
+const signRefreshToken = (userId, roles) => {
     let store = new database_1.Store();
     return new Promise((resolve, reject) => {
-        const payload = { id: userId, isAdmin };
+        const payload = { id: userId, roles };
         const options = {
             expiresIn: '1y',
         };
         jsonwebtoken_1.default.sign(payload, config_1.REFRESH_TOKEN_SECRET, options, (err, refToken) => {
             if (err) {
-                console.error('issue with refresh handshake', err);
-                return reject(http_errors_1.default.InternalServerError());
+                return reject(http_errors_1.default.InternalServerError("wrong credentials provided"));
             }
             store.setStore(`${userId}`, refToken, (err, result) => {
                 if (err)
                     return reject(http_errors_1.default.InternalServerError(`${err}`));
-                console.log(result);
                 resolve(result);
             });
         });

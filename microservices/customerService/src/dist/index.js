@@ -14,12 +14,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const config_1 = require("./config");
-// import { databaseConnection } from './database'
 const express_app_1 = __importDefault(require("./express-app"));
+const database_1 = require("./database");
 // import { CreateChannel } from './utils'
 const StartServer = () => __awaiter(void 0, void 0, void 0, function* () {
     const app = (0, express_1.default)();
-    //   await databaseConnection()
+    yield (0, database_1.dbConn)();
     //   const channel = await CreateChannel()
     yield (0, express_app_1.default)(app, "channel");
     app

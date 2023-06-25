@@ -62,9 +62,7 @@ class CustomerRepository {
   }
 
   async Wishlist(customerId: string): Promise<IWishList[] | undefined> {
-    const profile = await CustomerModel.findById(customerId).populate(
-      'wishlist',
-    );
+    const profile = await CustomerModel.findById(customerId).exec();
 
     return profile?.wishlist;
   }
@@ -161,28 +159,28 @@ class CustomerRepository {
       }
 
       profile.cart = cartItems;
-
-      return await profile.save();
     }
+    const cartResult = await profile?.save();
+    return cartResult?.cart;
+  }
 
-    throw new Error('Unable to add to cart!');
+  async Orders(customerId: string): Promise<IOrder[] | undefined> {
+    const profile = await CustomerModel.findById(customerId).exec();
+
+    return profile?.orders;
   }
 
   async AddOrderToProfile(customerId: string, order: IOrder) {
     const profile = await CustomerModel.findById(customerId).exec();
 
     if (profile) {
-        
       profile.orders.push(order);
 
       profile.cart = [];
-
-      const profileResult = await profile.save();
-
-      return profileResult;
     }
+    const profileResult = await profile?.save();
 
-    throw new Error('Unable to add to order!');
+    return profileResult;
   }
 }
 

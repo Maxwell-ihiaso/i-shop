@@ -60,11 +60,11 @@ export const ValidatePassword = async (
 //   }
 // }
 
-export const signAccessToken = (userId: any, isAdmin: boolean) => {
+export const signAccessToken = (userId: string, roles: number[]) => {
   return new Promise((resolve, reject) => {
     const payload = {
       id: userId,
-      isAdmin,
+      roles,
     };
 
     const options = {
@@ -148,23 +148,21 @@ export const verifyAccessTokenAndAdmin = (
 // Refresh token is used to handle a forgot password
 // Redis is used to cache refresh token and black list on new ref token signing
 
-export const signRefreshToken = (userId: any, isAdmin: boolean) => {
+export const signRefreshToken = (userId: any, roles: number[]) => {
   let store = new Store();
   return new Promise((resolve, reject) => {
-    const payload = { id: userId, isAdmin };
+    const payload = { id: userId, roles };
     const options = {
       expiresIn: '1y',
     };
 
     jwt.sign(payload, REFRESH_TOKEN_SECRET, options, (err, refToken) => {
       if (err) {
-        console.error('issue with refresh handshake', err);
-        return reject(createError.InternalServerError());
+        return reject(createError.InternalServerError("wrong credentials provided"));
       }
 
       store.setStore(`${userId}`, refToken, (err, result) => {
         if (err) return reject(createError.InternalServerError(`${err}`));
-        console.log(result);
         resolve(result);
       });
     });
