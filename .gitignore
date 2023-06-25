@@ -6,3 +6,5 @@ src/dist
 dist
 **/.DS_Store
 **/node_modules
+
+**/yarn*
