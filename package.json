@@ -1,1 +1,28 @@
-{}
+{
+  "name": "ecommerce-app",
+  "version": "1.0.0",
+  "description": "A fullstack ecommerce app with microservices",
+  "main": "index.js",
+  "repository": "https://github.com/Maxwell-ihiaso/i-shop.git",
+  "author": "Maxwell (torchLight) Ihiaso",
+  "license": "ISC",
+  "scripts": {
+    "lint": "prettier --write \"**/*.ts\""
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.js": [
+      "yarn run lint",
+      "git add"
+    ]
+  },
+  "devDependencies": {
+    "husky": "^8.0.3",
+    "lint-staged": "^13.2.2",
+    "prettier": "^2.8.8"
+  }
+}
