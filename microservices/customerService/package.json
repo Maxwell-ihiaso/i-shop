@@ -11,17 +11,6 @@
     "build": "rimraf src/dist && tsc",
     "lint": "prettier --write \"**/*.ts\""
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "src/**/*.js": [
-      "yarn run lint",
-      "git add"
-    ]
-  },
   "devDependencies": {
     "@types/amqplib": "^0.10.1",
     "@types/bcrypt": "^5.0.0",

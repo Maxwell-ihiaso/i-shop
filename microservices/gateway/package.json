@@ -11,17 +11,6 @@
     "build": "rimraf dist && tsc",
     "lint": "prettier --write \"**/*.ts\""
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "src/**/*.js": [
-      "yarn run lint",
-      "git add"
-    ]
-  },
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
