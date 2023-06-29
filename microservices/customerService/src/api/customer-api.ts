@@ -124,7 +124,7 @@ export const customerAPI = (app: Express, channel: string): void => {
         .then((users) => {
           if (users != null) {
             return res.status(200).json(users)
-          } else throw createHttpError.NotFound('No users found')
+          } else throw createHttpError.NotFound('No user found')
         })
         .catch((err) => {
           next(err)
