@@ -1,13 +1,14 @@
-import { CustomerModel, AddressModel } from '../models';
+import { CustomerModel, AddressModel } from '../models'
+import { type IAddress } from '../models/Address-model'
 import {
-  ICartProduct,
-  ICustomer,
-  IOrder,
-  IProduct,
-  IWishList,
-} from '../models/Customer-model';
+  type ICartProduct,
+  type ICustomer,
+  type IOrder,
+  type IProduct,
+  type IWishList
+} from '../models/Customer-model'
 
-//Dealing with data base operations
+// Dealing with data base operations
 class CustomerRepository {
   async CreateCustomer({ email, password, phone }: any): Promise<ICustomer> {
     const customer = new CustomerModel({
@@ -17,11 +18,17 @@ class CustomerRepository {
       address: [],
       cart: [],
       wishlist: [],
-      orders: [],
-    });
+      orders: []
+    })
 
-    const customerResult = await customer.save();
-    return customerResult;
+    const customerResult = await customer.save()
+    return customerResult
+  }
+
+  async Address(customerId: string): Promise<IAddress[] | undefined> {
+    const profile = await this.FindCustomerById(customerId)
+
+    return profile?.address
   }
 
   async CreateAddress({
@@ -29,159 +36,170 @@ class CustomerRepository {
     street,
     postalCode,
     city,
-    country,
-  }: any): Promise<ICustomer | undefined> {
-    const profile = await CustomerModel.findById(_id);
+    country
+  }: any): Promise<IAddress | null> {
+    const profile = await CustomerModel.findById(_id)
 
-    if (profile) {
+    if (profile != null) {
       const newAddress = new AddressModel({
         street,
         postalCode,
         city,
-        country,
-      });
+        country
+      })
 
-      await newAddress.save().then((val) => profile.address.push(val._id));
+      const customerAddress = await newAddress.save()
+      profile.address.push(customerAddress._id)
+      await profile.save()
+      return customerAddress
     }
 
-    return await profile?.save();
+    return null
   }
 
   async FindCustomer({ email }: any): Promise<ICustomer | null> {
-    const existingCustomer = await CustomerModel.findOne({ email: email })
+    const existingCustomer = await CustomerModel.findOne({ email })
       .populate('address')
-      .exec();
-    return existingCustomer;
+      .exec()
+    return existingCustomer
   }
 
-  async FindCustomerById({ id }: any) {
+  async FindCustomerById(id: string): Promise<ICustomer | null> {
     const existingCustomer = await CustomerModel.findById(id)
       .populate('address')
-      .exec();
-    return existingCustomer;
+      .exec()
+    return existingCustomer
+  }
+
+  async FindAllCustomers(): Promise<ICustomer[]> {
+    const existingCustomers = await CustomerModel.find().exec()
+    return existingCustomers
   }
 
   async Wishlist(customerId: string): Promise<IWishList[] | undefined> {
-    const profile = await CustomerModel.findById(customerId).exec();
+    const profile = await CustomerModel.findById(customerId).exec()
 
-    return profile?.wishlist;
+    return profile?.wishlist
   }
 
   async AddOrRemoveWishlistItem(
     customerId: string,
-    { _id, name, description, price, available, banner }: IWishList,
-  ) {
+    { _id, name, description, price, available, banner }: IWishList
+  ): Promise<IWishList[] | undefined> {
     const product = {
       _id,
       name,
       description,
       price,
       available,
-      banner,
-    };
+      banner
+    }
 
-    const profile = await CustomerModel.findById(customerId).exec();
+    const profile = await CustomerModel.findById(customerId).exec()
 
-    if (profile) {
-      let wishlist = profile.wishlist;
+    if (profile != null) {
+      const wishlist = profile.wishlist
 
-      if (wishlist.length) {
-        let isExist = false;
+      if (wishlist.length > 0) {
+        let isExist = false
 
         for (const item of wishlist) {
           if (item._id.toString() === product._id.toString()) {
-            isExist = true;
-            const index = wishlist.indexOf(item);
-            wishlist.splice(index, 1);
-            break;
+            isExist = true
+            const index = wishlist.indexOf(item)
+            wishlist.splice(index, 1)
+            break
           }
         }
 
         if (!isExist) {
-          wishlist.push(product as IWishList);
+          wishlist.push(product as IWishList)
         }
       } else {
-        wishlist.push(product as IWishList);
+        wishlist.push(product as IWishList)
       }
 
-      profile.wishlist = wishlist;
+      profile.wishlist = wishlist
     }
 
-    const profileResult = await profile?.save();
+    const profileResult = await profile?.save()
 
-    return profileResult?.wishlist;
+    return profileResult?.wishlist
   }
 
   async Cart(customerId: string): Promise<ICartProduct[] | undefined> {
-    const profile = await CustomerModel.findById(customerId).exec();
+    const profile = await CustomerModel.findById(customerId).exec()
 
-    return profile?.cart;
+    return profile?.cart
   }
 
   async AddOrRemoveCartItem(
     customerId: string,
     { _id, name, price, banner }: IProduct,
     qty: number,
-    isRemove: boolean,
-  ) {
-    const profile = await CustomerModel.findById(customerId).exec();
+    isRemove: boolean
+  ): Promise<ICartProduct[] | undefined> {
+    const profile = await CustomerModel.findById(customerId).exec()
 
-    if (profile) {
+    if (profile != null) {
       const cartItem = {
         product: { _id, name, price, banner },
-        unit: qty,
-      };
+        unit: qty
+      }
 
-      let cartItems = profile.cart;
+      const cartItems = profile.cart
 
-      if (cartItems.length) {
-        let isExist = false;
+      if (cartItems.length > 0) {
+        let isExist = false
 
         for (const [index, item] of cartItems.entries()) {
           if (item.product._id.toString() === _id.toString()) {
-            isExist = true;
+            isExist = true
 
             if (isRemove) {
-              cartItems.splice(index, 1);
-              break;
+              cartItems.splice(index, 1)
+              break
             } else {
-              item.unit = qty;
-              break;
+              item.unit = qty
+              break
             }
           }
         }
 
         if (!isExist) {
-          cartItems.push(cartItem as ICartProduct);
+          cartItems.push(cartItem as ICartProduct)
         }
       } else {
-        cartItems.push(cartItem as ICartProduct);
+        cartItems.push(cartItem as ICartProduct)
       }
 
-      profile.cart = cartItems;
+      profile.cart = cartItems
     }
-    const cartResult = await profile?.save();
-    return cartResult?.cart;
+    const cartResult = await profile?.save()
+    return cartResult?.cart
   }
 
   async Orders(customerId: string): Promise<IOrder[] | undefined> {
-    const profile = await CustomerModel.findById(customerId).exec();
+    const profile = await CustomerModel.findById(customerId).exec()
 
-    return profile?.orders;
+    return profile?.orders
   }
 
-  async AddOrderToProfile(customerId: string, order: IOrder) {
-    const profile = await CustomerModel.findById(customerId).exec();
+  async AddOrderToProfile(
+    customerId: string,
+    order: IOrder
+  ): Promise<ICustomer | undefined> {
+    const profile = await CustomerModel.findById(customerId).exec()
 
-    if (profile) {
-      profile.orders.push(order);
+    if (profile != null) {
+      profile.orders.push(order)
 
-      profile.cart = [];
+      profile.cart = []
     }
-    const profileResult = await profile?.save();
+    const profileResult = await profile?.save()
 
-    return profileResult;
+    return profileResult
   }
 }
 
-export default CustomerRepository;
+export default CustomerRepository

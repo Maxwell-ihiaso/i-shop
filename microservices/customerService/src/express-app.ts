@@ -1,24 +1,26 @@
-import express, { Express } from 'express';
-import cors from 'cors';
-import { log } from 'console';
-import { ErrorHandler } from './utils/error-handler';
-import { Store } from './database';
-// import { customer, appEvents } from './api'
+import express, { type Express } from 'express'
+import cors from 'cors'
+import cookieParser from 'cookie-parser'
+import morgan from 'morgan'
+
+import ErrorHandler from './utils'
+import { customerAPI } from './api/customer-api'
+
 // import { SubscribeMessage } from './utils'
 
-const store = new Store();
+export default async (app: Express, channel: any): Promise<void> => {
+  app.use(morgan('dev'))
+  app.use(cors())
+  app.use(express.json())
+  app.use(express.urlencoded({ extended: false }))
+  app.use(cookieParser())
 
-export default async (app: Express, channel: any) => {
-  app.use(cors());
-  app.use(express.json());
-  app.use(express.urlencoded({ extended: false }));
-  //   app.use(express.static(__dirname + '/public'))
-
-  //api
+  // api
   // appEvents(app);
-  log(channel);
-  //   customer(app, channel)
+
+  customerAPI(app, channel)
 
   // error handling
-  app.use(ErrorHandler);
-};
+  // eslint-disable-next-line @typescript-eslint/no-misused-promises
+  app.use(ErrorHandler)
+}

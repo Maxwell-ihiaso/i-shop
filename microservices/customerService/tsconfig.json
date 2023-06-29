@@ -11,8 +11,18 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "outDir": "./src/dist",
-    "rootDir": "./src"
+    "rootDir": "./src",
+    "baseUrl": "./src",
+    "paths": {
+      "@/*": ["*"],
+      "@/config/*": ["config/*"],
+      "@/database/*": ["database/*"],
+      "@/utils/*": ["utils/*"],
+      "@/api/*": ["api/*"],
+      "@/services/*": ["services/*"]
+    },
+    "resolveJsonModule": true
   },
-    "include": ["**/*"],
-  "exclude": ["node_modules", "dist"]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "src/dist"]
 }

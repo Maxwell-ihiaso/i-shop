@@ -1,137 +1,179 @@
-import { CustomerRepository } from '../database';
-import { signAccessToken, signRefreshToken } from '../utils';
+import { type IAddress } from '@/database/models/Address-model'
+import { CustomerRepository } from '../database'
+import { signAccessToken, signRefreshToken } from '../utils'
+import {
+  type ICartProduct,
+  type ICustomer,
+  type IOrder,
+  type IWishList
+} from '@/database/models/Customer-model'
 
 // All Business logic will be here
-class CustomerService {
-  private repository;
+export default class CustomerService {
+  private readonly repository
 
   public constructor() {
-    this.repository = new CustomerRepository();
+    this.repository = new CustomerRepository()
   }
 
-  async SignIn(userInputs: { email: string; password: string }) {
-    const { email, password } = userInputs;
+  async SignIn(userInputs: { email: string; password: string }): Promise<{
+    id: string
+    roles: number[]
+    accessToken: string
+    refreshToken: string
+  } | null> {
+    const { email, password } = userInputs
 
-    const existingCustomer = await this.repository.FindCustomer({ email });
+    const existingCustomer = await this.repository.FindCustomer({ email })
 
-    if (existingCustomer) {
-      const validPassword = await existingCustomer.isValidPassword(password);
+    if (existingCustomer != null) {
+      const validPassword = await existingCustomer.isValidPassword(password)
 
+      console.log({ validPassword })
       if (validPassword) {
         const accessToken = await signAccessToken(
           existingCustomer._id,
-          existingCustomer.roles,
-        );
+          existingCustomer.roles
+        )
         const refreshToken = await signRefreshToken(
           existingCustomer._id,
-          existingCustomer.roles,
-        );
+          existingCustomer.roles
+        )
         return {
           id: existingCustomer._id,
           roles: existingCustomer.roles,
           accessToken,
-          refreshToken,
-        };
+          refreshToken
+        }
       }
+      return null
     }
-
-    return null;
+    return null
   }
 
-  async SignUp(userInputs: { email: string; password: string; phone: string }) {
-    const { email, password, phone } = userInputs;
+  async SignUp(userInputs: {
+    email: string
+    password: string
+    phone: string
+  }): Promise<{
+    id: any
+    roles: number[]
+  } | null> {
+    const { email, password, phone } = userInputs
+    const existingCustomer = await this.repository.FindCustomer({ email })
 
-    const existingCustomer = await this.repository.CreateCustomer({
-      email,
-      password,
-      phone,
-    });
+    if (existingCustomer == null) {
+      const customerResult = await this.repository.CreateCustomer({
+        email,
+        password,
+        phone
+      })
 
-    return { id: existingCustomer._id, roles: existingCustomer.roles };
+      return { id: customerResult._id, roles: customerResult.roles }
+    }
+    return null
+  }
+
+  async GetAddress(customerId: string): Promise<IAddress[] | undefined> {
+    const Address = await this.repository.Address(customerId)
+    return Address
   }
 
   async AddNewAddress(
     _id: string,
     userInputs: {
-      street: string;
-      postalCode: any;
-      city: string;
-      country: string;
-    },
-  ) {
-    const { street, postalCode, city, country } = userInputs;
+      street: string
+      postalCode: any
+      city: string
+      country: string
+    }
+  ): Promise<IAddress | null> {
+    const { street, postalCode, city, country } = userInputs
 
     const addressResult = await this.repository.CreateAddress({
       _id,
       street,
       postalCode,
       city,
-      country,
-    });
+      country
+    })
 
-    return addressResult;
+    return addressResult
   }
 
-  async GetProfile(id: string) {
-    const existingCustomer = await this.repository.FindCustomerById({ id });
-    return existingCustomer;
+  async GetProfileByEmail(email: string): Promise<ICustomer | null> {
+    const existingCustomer = await this.repository.FindCustomer({ email })
+    return existingCustomer
   }
 
-  //Revisit shopping details
-  async GetShopingDetails(id: string) {
-    const existingCustomer = await this.repository.FindCustomerById({ id });
-
-    if (existingCustomer) {
-      // const orders = await this.shopingRepository.Orders(id);
-      return existingCustomer;
-    }
-    return null;
+  async GetAllUsers(): Promise<ICustomer[] | null> {
+    const existingCustomers = await this.repository.FindAllCustomers()
+    return existingCustomers
   }
 
-  async GetWishList(customerId: string) {
-    const wishListItems = await this.repository.Wishlist(customerId);
-    return wishListItems;
+  async GetProfileById(id: string): Promise<ICustomer | null> {
+    const existingCustomer = await this.repository.FindCustomerById(id)
+    return existingCustomer
   }
 
-  async AddOrRemoveWishlist(customerId: string, product: any) {
+  // Revisit shopping details
+  async GetShopingDetails(id: string): Promise<ICustomer | null> {
+    const existingCustomer = await this.repository.FindCustomerById(id)
+
+    // const orders = await this.shopingRepository.Orders(id);
+    return existingCustomer
+  }
+
+  async GetWishList(customerId: string): Promise<IWishList[] | undefined> {
+    const wishListItems = await this.repository.Wishlist(customerId)
+    return wishListItems
+  }
+
+  async AddOrRemoveWishlist(
+    customerId: string,
+    product: any
+  ): Promise<IWishList[] | undefined> {
     const wishlistResult = await this.repository.AddOrRemoveWishlistItem(
       customerId,
-      product,
-    );
-    return wishlistResult;
+      product
+    )
+    return wishlistResult
   }
 
-  async GetCart(customerId: string) {
-    const cart = await this.repository.Cart(customerId);
-    return cart;
+  async GetCart(customerId: string): Promise<ICartProduct[] | undefined> {
+    const cart = await this.repository.Cart(customerId)
+    return cart
   }
 
   async ManageCart(
     customerId: string,
     product: any,
     qty: number,
-    isRemove: boolean,
-  ) {
+    isRemove: boolean
+  ): Promise<ICartProduct[] | undefined> {
     const cartResult = await this.repository.AddOrRemoveCartItem(
       customerId,
       product,
       qty,
-      isRemove,
-    );
-    return cartResult;
+      isRemove
+    )
+    return cartResult
   }
 
-  async GetOrders(customerId: string) {
-    const orders = await this.repository.Orders(customerId);
-    return orders;
+  async GetOrders(customerId: string): Promise<IOrder[] | undefined> {
+    const orders = await this.repository.Orders(customerId)
+    return orders
   }
 
-  async ManageOrder(customerId: string, order: any) {
+  async ManageOrder(
+    customerId: string,
+    order: any
+  ): Promise<ICustomer | undefined> {
     const orderResult = await this.repository.AddOrderToProfile(
       customerId,
-      order,
-    );
-    return orderResult;
+      order
+    )
+    return orderResult
   }
 
   //   async SubscribeEvents(payload) {
@@ -162,5 +204,3 @@ class CustomerService {
   //     }
   //   }
 }
-
-module.exports = CustomerService;
