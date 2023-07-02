@@ -7,11 +7,13 @@ const errorLogger = new ErrorLogger()
 const dbConn = async () => {
   await mongoose
     .connect(MONGO_URI)
-    .then(() => console.log('DB:===== ESTABLISHED CONECTION TO DATABASE!'))
+    .then(() =>
+      console.log('\nDB :===== connected to Product database! =======')
+    )
     .catch((err) => errorLogger.logError(err))
 
   mongoose.connection.on('disconnected', () =>
-    console.log('DB:===== Conection closed!')
+    console.log('\nDB:===== Conection closed!')
   )
 
   process.on('SIGINT', async () => {

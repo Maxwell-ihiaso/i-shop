@@ -90,7 +90,7 @@ const CustomerSchema = new Schema<ICustomer>(
   },
   {
     toJSON: {
-      transform(doc, ret) {
+      transform(_doc, ret) {
         delete ret.password
         delete ret.__v
       }

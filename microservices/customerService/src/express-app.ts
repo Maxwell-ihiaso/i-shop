@@ -4,7 +4,7 @@ import cookieParser from 'cookie-parser'
 import morgan from 'morgan'
 
 import ErrorHandler from './utils'
-import { customerAPI } from './api/customer-api'
+import { appEvents, customerAPI } from './api'
 
 // import { SubscribeMessage } from './utils'
 
@@ -16,8 +16,8 @@ export default async (app: Express, channel: any): Promise<void> => {
   app.use(cookieParser())
 
   // api
-  // appEvents(app);
 
+  appEvents(app)
   customerAPI(app, channel)
 
   // error handling

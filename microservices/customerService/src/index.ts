@@ -4,10 +4,12 @@ import express, { type Express } from 'express'
 import { ENVIRONMENT, PORT } from './config'
 import expressApp from './express-app'
 import { dbConn } from './database'
+import { ErrorLogger } from './utils/error-handler'
 // import { CreateChannel } from './utils'
 
 const StartServer = async (): Promise<void> => {
   const app: Express = express()
+  const logger = new ErrorLogger()
 
   await dbConn()
 
@@ -18,15 +20,16 @@ const StartServer = async (): Promise<void> => {
   app
     .listen(PORT, () => {
       console.log(`${ENVIRONMENT} environment started`)
-      console.log(`listening to port ${PORT}`)
+      console.log(`Custoemr service is listening to port ${PORT}`)
     })
-    .on('error', (err) => {
-      console.log(err)
+    .on('error', async (err) => {
+      await logger.logError(err)
       process.exit()
     })
-  // .on('close', () => {
-  //   channel.close()
-  // })
+    .on('close', () => {
+      console.log('Server stopped')
+      // channel.close()
+    })
 }
 
 void StartServer()

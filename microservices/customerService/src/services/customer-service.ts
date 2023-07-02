@@ -2,6 +2,7 @@ import { type IAddress } from '@/database/models/Address-model'
 import { CustomerRepository } from '../database'
 import { signAccessToken, signRefreshToken } from '../utils'
 import {
+  IProduct,
   type ICartProduct,
   type ICustomer,
   type IOrder,
@@ -29,7 +30,6 @@ export default class CustomerService {
     if (existingCustomer != null) {
       const validPassword = await existingCustomer.isValidPassword(password)
 
-      console.log({ validPassword })
       if (validPassword) {
         const accessToken = await signAccessToken(
           existingCustomer._id,
@@ -56,7 +56,7 @@ export default class CustomerService {
     password: string
     phone: string
   }): Promise<{
-    id: any
+    id: string
     roles: number[]
   } | null> {
     const { email, password, phone } = userInputs
@@ -131,7 +131,7 @@ export default class CustomerService {
 
   async AddOrRemoveWishlist(
     customerId: string,
-    product: any
+    product: IWishList
   ): Promise<IWishList[] | undefined> {
     const wishlistResult = await this.repository.AddOrRemoveWishlistItem(
       customerId,
@@ -167,7 +167,7 @@ export default class CustomerService {
 
   async ManageOrder(
     customerId: string,
-    order: any
+    order: IOrder
   ): Promise<ICustomer | undefined> {
     const orderResult = await this.repository.AddOrderToProfile(
       customerId,
@@ -176,31 +176,27 @@ export default class CustomerService {
     return orderResult
   }
 
-  //   async SubscribeEvents(payload) {
-  //     console.log('Triggering.... Customer Events');
+  async SubscribeEvents(payload: any) {
+    const { event, data } = payload
 
-  //     payload = JSON.parse(payload);
+    const { userId, product, order, qty } = data
 
-  //     const { event, data } = payload;
-
-  //     const { userId, product, order, qty } = data;
-
-  //     switch (event) {
-  //       case 'ADD_TO_WISHLIST':
-  //       case 'REMOVE_FROM_WISHLIST':
-  //         this.AddToWishlist(userId, product);
-  //         break;
-  //       case 'ADD_TO_CART':
-  //         this.ManageCart(userId, product, qty, false);
-  //         break;
-  //       case 'REMOVE_FROM_CART':
-  //         this.ManageCart(userId, product, qty, true);
-  //         break;
-  //       case 'CREATE_ORDER':
-  //         this.ManageOrder(userId, order);
-  //         break;
-  //       default:
-  //         break;
-  //     }
-  //   }
+    switch (event) {
+      case 'ADD_TO_WISHLIST':
+      case 'REMOVE_FROM_WISHLIST':
+        this.AddOrRemoveWishlist(userId, product)
+        break
+      case 'ADD_TO_CART':
+        this.ManageCart(userId, product, qty, false)
+        break
+      case 'REMOVE_FROM_CART':
+        this.ManageCart(userId, product, qty, true)
+        break
+      case 'CREATE_ORDER':
+        this.ManageOrder(userId, order)
+        break
+      default:
+        break
+    }
+  }
 }

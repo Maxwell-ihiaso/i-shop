@@ -13,7 +13,7 @@ export interface IProduct extends Document {
 
 const ProductSchema: Schema<IProduct> = new Schema<IProduct>({
   name: { type: String, lowercase: true, required: true },
-  desc: String,
+  desc: { type: String, required: true },
   banner: {
     type: String,
     default: 'https://bubbleerp.sysfosolutions.com/img/default-pro.jpg'

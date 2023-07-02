@@ -15,12 +15,12 @@ export interface CustomRequest extends Request {
  * If the token is invalid, throws an unauthorized error.
  *
  * @param req - Express request object.
- * @param res - Express response object.
+ * @param _res - Express response object.
  * @param next - Express next function.
  */
 export const verifyAccessToken = (
   req: CustomRequest,
-  res: Response,
+  _res: Response,
   next: NextFunction
 ): void => {
   // Check if the header has an authorization key.
@@ -96,10 +96,10 @@ export const verifyRoles = (...allowedRoles: number[]) => {
   /**
    * Middleware function that checks if the user has the required roles
    * @param req Express request object
-   * @param res Express response object
+   * @param _res Express response object
    * @param next Express next function
    */
-  return (req: CustomRequest, res: Response, next: NextFunction): void => {
+  return (req: CustomRequest, _res: Response, next: NextFunction): void => {
     try {
       // If user roles are undefined, throw Forbidden error
       if (req?.user?.roles === undefined) {
@@ -142,7 +142,7 @@ export const verifyRoles = (...allowedRoles: number[]) => {
  */
 export const verifyRefreshToken = (
   req: CustomRequest,
-  res: Response,
+  _res: Response,
   next: NextFunction
 ): void => {
   // Instantiate a new Store instance

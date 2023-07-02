@@ -1,6 +1,7 @@
 import 'dotenv/config'
 
 export const PORT = process.env.PORT as string
+export const HOST = process.env.HOST as string
 export const ENVIRONMENT = process.env.NODE_ENV as string
 export const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET as string
 export const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET as string
@@ -15,3 +16,7 @@ export const STRIPE_KEY = process.env.STRIPE_KEY as string
 export const MSG_QUEUE_URL = process.env.MSG_QUEUE_URL as string
 export const EXCHANGE_NAME = process.env.EXCHANGE_NAME as string
 export const APP_SECRET = process.env.APP_SECRET as string
+export const CUSTOMER_SERVICE = 'customer_service'
+export const SHOPPING_SERVICE = 'shopping_service'
+export const CUSTOMER_BASE_URL = process.env.CUSTOMER_BASE_URL as string
+// export const CUSTOMER_BASE_URL = 'http://localhost:8003'

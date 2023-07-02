@@ -80,9 +80,7 @@ export const customerAPI = (app: Express, channel: string): void => {
       service
         .GetAddress(id)
         .then((data) => {
-          if (data !== undefined) {
-            return res.status(200).json(data)
-          } else throw createHttpError.NotFound('Address not found')
+          res.status(200).json(data)
         })
         .catch((error) => {
           next(error)
@@ -99,13 +97,7 @@ export const customerAPI = (app: Express, channel: string): void => {
       service
         .GetProfileById(id)
         .then((data) => {
-          if (data != null) {
-            return res.status(200).json(data)
-          } else {
-            throw createHttpError.NotFound(
-              'User not found. Please create an account'
-            )
-          }
+          res.status(200).json(data)
         })
         .catch((error) => {
           next(error)
@@ -118,13 +110,11 @@ export const customerAPI = (app: Express, channel: string): void => {
     verifyAccessToken,
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
     verifyRoles(1984),
-    (req: CustomRequest, res: Response, next: NextFunction) => {
+    (_req: CustomRequest, res: Response, next: NextFunction) => {
       service
         .GetAllUsers()
         .then((users) => {
-          if (users != null) {
-            return res.status(200).json(users)
-          } else throw createHttpError.NotFound('No user found')
+          res.status(200).json(users)
         })
         .catch((err) => {
           next(err)
@@ -141,9 +131,7 @@ export const customerAPI = (app: Express, channel: string): void => {
       service
         .GetShopingDetails(id)
         .then((data) => {
-          if (data != null) {
-            return res.status(200).json(data)
-          } else throw createHttpError.NotFound('Shoping Details not found')
+          res.status(200).json(data)
         })
         .catch((error) => {
           next(error)
@@ -160,9 +148,7 @@ export const customerAPI = (app: Express, channel: string): void => {
       service
         .GetWishList(id)
         .then((data) => {
-          if (data !== undefined) {
-            return res.status(200).json(data)
-          } else throw createHttpError.NotFound('Wishlist not found')
+          res.status(200).json(data)
         })
         .catch((error) => {
           next(error)
@@ -179,9 +165,7 @@ export const customerAPI = (app: Express, channel: string): void => {
       service
         .GetCart(id)
         .then((data) => {
-          if (data !== undefined) {
-            return res.status(200).json(data)
-          } else throw createHttpError.NotFound('Cart not found')
+          res.status(200).json(data)
         })
         .catch((error) => {
           next(error)
@@ -198,9 +182,7 @@ export const customerAPI = (app: Express, channel: string): void => {
       service
         .GetOrders(id)
         .then((data) => {
-          if (data !== undefined) {
-            return res.status(200).json(data)
-          } else throw createHttpError.NotFound('Orders not found')
+          return res.status(200).json(data)
         })
         .catch((error) => {
           next(error)
@@ -208,11 +190,11 @@ export const customerAPI = (app: Express, channel: string): void => {
     }
   )
 
-  app.get('/whoami', (req: Request, res: Response) => {
+  app.get('/whoami', (_req: Request, res: Response) => {
     return res.status(200).json({ msg: '/customer : I am Customer Service' })
   })
 
-  app.all('*', (req: CustomRequest, res: Response, next: NextFunction) => {
+  app.all('*', (req: CustomRequest, _res: Response, next: NextFunction) => {
     next(
       createHttpError.NotFound(
         `No resource for ${req.method} to ${req.originalUrl}`

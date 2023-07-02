@@ -33,7 +33,6 @@ export const ValidatePassword = async (
   enteredPassword: string,
   savedPassword: string
 ): Promise<boolean> => {
-  console.log({ enteredPassword, savedPassword })
   return await bcrypt.compare(enteredPassword, savedPassword)
 }
 
