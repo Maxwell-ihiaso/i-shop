@@ -81,6 +81,39 @@ export const productAPI = (app: Express) => {
     }
   )
 
+  app.post(
+    '/cart',
+    verifyAccessToken,
+    async (req: CustomRequest, res: Response, next: NextFunction) => {
+      try {
+        const { id } = req.user
+
+        const payload = await service.GetProductPayload(
+          id,
+          { productId: req.body._id, qty: req.body.qty },
+          'ADD_TO_CART'
+        )
+
+        if (payload?.data) {
+          publishCustomerEvent(payload)
+          // PublishShoppingEvent(data);
+
+          // PublishMessage(channel, CUSTOMER_SERVICE, JSON.stringify(data));
+          // PublishMessage(channel, SHOPPING_SERVICE, JSON.stringify(data));
+
+          const response = {
+            product: payload.data.product,
+            unit: payload.data.qty
+          }
+
+          res.status(200).json(response)
+        } else throw createHttpError.NotFound('Product not found')
+      } catch (error) {
+        next(error)
+      }
+    }
+  )
+
   app.get('/whoami', (_req: Request, res: Response) => {
     return res.status(200).json({ msg: '/product : I am Product Service' })
   })

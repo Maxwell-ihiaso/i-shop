@@ -15,16 +15,13 @@ export const appEvents = (app: Express): void => {
     '/app-events',
     async (req: Request, res: Response, next: NextFunction) => {
       try {
-        const { payload } = req.body
-
-        console.log({ payload })
+        const payload = req.body
 
         if (payload?.data) {
           //handle subscribe events
           service.SubscribeEvents(payload)
 
           console.log('\n===== User Event Received =====')
-          console.log(payload)
           res.json(payload)
         } else throw createHttpError.BadRequest('Invalid payload')
       } catch (error) {

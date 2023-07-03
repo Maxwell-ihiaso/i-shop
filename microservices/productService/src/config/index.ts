@@ -19,4 +19,3 @@ export const APP_SECRET = process.env.APP_SECRET as string
 export const CUSTOMER_SERVICE = 'customer_service'
 export const SHOPPING_SERVICE = 'shopping_service'
 export const CUSTOMER_BASE_URL = process.env.CUSTOMER_BASE_URL as string
-// export const CUSTOMER_BASE_URL = 'http://localhost:8003'

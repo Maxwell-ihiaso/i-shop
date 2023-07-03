@@ -4,7 +4,6 @@ import proxy from 'express-http-proxy'
 import morgan from 'morgan'
 import {
   AUTH_MICROSERVICE,
-  CART_MICROSERVICE,
   CHECKOUT_MICROSERVICE,
   ENVIRONMENT,
   ORDER_MICROSERVICE,
@@ -20,7 +19,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
 app.use('/user', proxy(USER_MICROSERVICE))
-app.use('/cart', proxy(CART_MICROSERVICE))
+// app.use('/cart', proxy(CART_MICROSERVICE))
 app.use('/order', proxy(ORDER_MICROSERVICE))
 app.use('/checkout', proxy(CHECKOUT_MICROSERVICE))
 app.use('/auth', proxy(AUTH_MICROSERVICE))

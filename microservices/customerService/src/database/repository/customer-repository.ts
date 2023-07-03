@@ -103,10 +103,9 @@ class CustomerRepository {
       if (wishlist.length > 0) {
         let isExist = false
 
-        for (const item of wishlist) {
+        for (const [index, item] of wishlist.entries()) {
           if (item._id.toString() === product._id.toString()) {
             isExist = true
-            const index = wishlist.indexOf(item)
             wishlist.splice(index, 1)
             break
           }
