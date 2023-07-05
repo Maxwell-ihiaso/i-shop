@@ -113,6 +113,40 @@ export const signRefreshToken = async (
   })
 }
 
+/**
+ * Revoke the refresh token for a user.
+ *
+ * @param userId The ID of the user.
+ * @returns A Promise that resolves when the refresh token is revoked.
+ */
+export const revokeRefreshToken = async (userId: string): Promise<void> => {
+  const store: Store = new Store()
+
+  await store.setStore(`${userId}`, '', (err: Error | null) => {
+    if (err != null) {
+      console.log(err.message)
+    }
+  })
+}
+
+/**
+ * Checks if a user is logged in.
+ *
+ * @param id The user ID.
+ * @returns A promise that resolves to a boolean indicating if the user is logged in.
+ */
+export const isLoggedIn = async (id: string): Promise<boolean> => {
+  const store: Store = new Store()
+
+  try {
+    const result = await store.getStore(id)
+    return result === id
+  } catch (err: any) {
+    console.log(err?.message)
+    return false
+  }
+}
+
 // //Message Broker
 // export const CreateChannel = async () => {
 //   try {

@@ -52,6 +52,24 @@ export const customerAPI = (app: Express, channel: string): void => {
   })
 
   app.post(
+    '/logout',
+    verifyAccessToken,
+    (req: CustomRequest, res: Response, next: NextFunction) => {
+      const { id } = req.user
+
+      service
+        .SignOut(id)
+        .then(() => {
+          res.clearCookie(`${id}`)
+          return res.status(204).end()
+        })
+        .catch((error) => {
+          next(error)
+        })
+    }
+  )
+
+  app.post(
     '/address/new',
     verifyAccessToken,
     (req: CustomRequest, res: Response, next: NextFunction) => {

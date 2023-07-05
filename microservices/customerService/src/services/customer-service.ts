@@ -1,6 +1,6 @@
 import { type IAddress } from '@/database/models/Address-model'
 import { CustomerRepository } from '../database'
-import { signAccessToken, signRefreshToken } from '../utils'
+import { revokeRefreshToken, signAccessToken, signRefreshToken } from '../utils'
 import {
   IProduct,
   type ICartProduct,
@@ -49,6 +49,10 @@ export default class CustomerService {
       return null
     }
     return null
+  }
+
+  async SignOut(userId: string) {
+    await revokeRefreshToken(userId)
   }
 
   async SignUp(userInputs: {
