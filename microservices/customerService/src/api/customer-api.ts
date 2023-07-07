@@ -51,6 +51,7 @@ export const customerAPI = (app: Express, channel: string): void => {
       })
   })
 
+  // TODO: create a logout service. it sould also delete the refresh token from the store using revokeRefreshToken
   app.post(
     '/logout',
     verifyAccessToken,

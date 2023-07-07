@@ -124,7 +124,7 @@ export const revokeRefreshToken = async (userId: string): Promise<void> => {
 
   await store.setStore(`${userId}`, '', (err: Error | null) => {
     if (err != null) {
-      console.log(err.message)
+      console.warn(err.message)
     }
   })
 }
